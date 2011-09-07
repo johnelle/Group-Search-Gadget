@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<Module>
+<ModulePrefs title="Embedded Discussion Forum" title_url="http://groups.google.com/forum" 
+	description="Discussion forums embedded content view" height="600" 
+	scaling="false" scrolling="false" render_inline="true" singleton="false">
+<?xml version="1.0" encoding="UTF-8" ?> 
+<Module>
+<ModulePrefs title="Embedded Discussion Forum" title_url="http://groups.google.com/forum" 
+  description="Discussion forums embedded content view" height="600" width="600"
+  author="John Ellenberger"  author_email="johne@jellenberger.org"
+  thumbnail="http://groups.google.com/intl/en/images/logos/groups_logo.gif"
+  scaling="false" scrolling="false" render_inline="optional" singleton="false">  
+</ModulePrefs>
+<!--
+A default forum to display if the parent URL does not provide a forum id or search string.
+-->
+<UserPref name="Forum" display_name="Default forum" datatype="string" required="false"/>
+<UserPref name="Domain" display_name="The domain containing the content to display" 
+  datatype="string" default_value="" required="false"/>
+<UserPref name="ShowSearch" display_name="Show a search box for this forum" datatype="bool" default_value="true"/>
+<UserPref name="ShowPopout" display_name="Show a link to pop out into a new window" datatype="bool" default_value="true"/>
+<Content type="html">
+<![CDATA[
+<iframe src="javascript:void(0)" id="forumContent" frameborder="0" width="100%" height="100%"> </iframe> 
+<!-- The src for the iframe includes both the parent url from the site, as well as 
+the default forum ID if one was given; the server will check the parent first, and then 
+fallback to trying the forumid parameter on the url. --> 
+<script type="text/javascript"> 
+  var url = "https://groups.google.com"; 
+  var domain = '__UP_Domain__'; 
+  if (domain.length > 0) { url += "/a/" + _esc(domain); } url += "/forum/embed/?parenturl=" + _esc(_args()["parent"]); 
+  var defaultForum = '__UP_Forum__'; 
+  if (defaultForum.length > 0) { url += "&place=forum%2F" + _esc(defaultForum); } 
+  var showPopout = __UP_ShowPopout__; 
+  if (showPopout) { url += "&showpopout=true"; } 
+  var showSearch = __UP_ShowSearch__; 
+  if (showSearch) { url += "&showsearch=true"; } url += "&service=jotspot&ul=1"; _gel("forumContent").src = url; 
+</script>
+]]>
+</Content>
+</Module>
